@@ -1,112 +1,85 @@
 ﻿using System;
 using UnityEngine;
 
-
-
-
 public class PlayerController: MonoBehaviour
 {
-
-    public float speed = 0.0f;
+    public float speed = 0.0f, speedRL =2.00f;
     public Vector3 move;
     public float sensitivity = 1000.0f;
 
 
-    public float RotationSpeedW     = 0f;
-    public float RotationSpeedH     = 0f;
-  //public float dumpAmt            = 2f;
-    public float speedX, speedY, speedZ, speedOldX, speedOldY, speedOldZ = 0f;
+    public float RoSpeedW     = 0f;
+    public float RoSpeedH     = 0f;
+    public float RoSpeedX, RoSpeedY, RoSpeedZ = 0f;
 
-
-    private void Awake()    {}
-
-
-    //  private float _rotationX=1f;
-    //   private float ad_LR=0f, ws_FB=0f;
 
     private void Update()
-
     {
-        //      Debug.Log("rr");
-
-
         // тормоз
         if (Input.GetKeyDown("`") || Input.GetKeyDown("0"))
         {
             move = new Vector3(0f, 0f, 0f);
-            speed = 0f;
-            RotationSpeedW = 0f;
-            RotationSpeedH = 0f;
-            speedX = 0f;
-            speedY = 0f;
-            speedZ = 0f;
+            speed = 0f; 
+            speedRL = 2f;
+            RoSpeedW = 0f;
+            RoSpeedH = 0f;
+            RoSpeedX = 0f;
+            RoSpeedY = 0f;
+            RoSpeedZ = 0f;
         }
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             // Перевороты  расчет   
-            if (Input.GetKeyDown(KeyCode.A)) RotationSpeedW += 1f;
-            if (Input.GetKeyDown(KeyCode.D)) RotationSpeedW -= 1f;
+            if (Input.GetKeyDown(KeyCode.A)) RoSpeedW += 2f;
+            if (Input.GetKeyDown(KeyCode.D)) RoSpeedW -= 2f;
 
-            if (Input.GetKeyDown(KeyCode.W)) RotationSpeedH += 1f; // Math.Abs(RotationSpeed - 20f)
-            if (Input.GetKeyDown(KeyCode.S)) RotationSpeedH -= 1f;
+            if (Input.GetKeyDown(KeyCode.W)) RoSpeedH += 2f; // Math.Abs(RotationSpeed - 20f)
+            if (Input.GetKeyDown(KeyCode.S)) RoSpeedH -= 2f;
         }
         else
         {
             // выбор скорости
-            if (Input.GetKeyDown(KeyCode.Alpha1))   speed  =   10f;
-            if (Input.GetKeyDown(KeyCode.Alpha2))   speed  =   50f;
-            if (Input.GetKeyDown(KeyCode.Alpha3))   speed  =  100f;
+            if (Input.GetKeyDown(KeyCode.Alpha1)) speed = 5f;
+            if (Input.GetKeyDown(KeyCode.Alpha2)) speed = 10f;
+            if (Input.GetKeyDown(KeyCode.Alpha3)) speed = 20f;
+            if (Input.GetKeyDown(KeyCode.Alpha4)) speed = 100f;
+            if (Input.GetKeyDown(KeyCode.Alpha5)) speed = 500f;
 
             // рaсчет для Vectora3
-            if (Input.GetKeyDown(KeyCode.D)) speedX += speed;
-            if (Input.GetKeyDown(KeyCode.A)) speedX -= speed;
-            if (Input.GetKeyDown(KeyCode.W)) speedZ += speed;
-            if (Input.GetKeyDown(KeyCode.S)) speedZ -= speed;
+            if (Input.GetKeyDown(KeyCode.D)) RoSpeedX += speed;
+            if (Input.GetKeyDown(KeyCode.A)) RoSpeedX -= speed;
+            if (Input.GetKeyDown(KeyCode.W)) RoSpeedZ += speed;
+            if (Input.GetKeyDown(KeyCode.S)) RoSpeedZ -= speed;
+            if (Input.GetKeyDown(KeyCode.E)) RoSpeedY += speedRL;
+            if (Input.GetKeyDown(KeyCode.Q)) RoSpeedY -= speedRL;
 
-            //Применение выбранной скорости
-            //if (speedX != speedOldX) speedX += speed;
-            //if (speedX != speedOldX) speedX -= speed;
-            //if (speedZ != speedOldZ) speedZ += speed; 
-            //if (speedZ != speedOldZ) speedZ -= speed;
+            if (Input.GetKeyDown(KeyCode.PageUp)) { RoSpeedX *= 2f; RoSpeedZ *= 2f; }
+            if (Input.GetKeyDown(KeyCode.PageDown)) { RoSpeedX /= 2f; RoSpeedZ /= 2f; }
 
-            if (Input.GetKeyDown(KeyCode.PageUp))   { speedX *= 2f; speedZ *= 2f; }
-            if (Input.GetKeyDown(KeyCode.PageDown)) { speedX /= 2f; speedZ /= 2f; }
-
-            //if (speedX != speedOldX && speedX > 0) { speedX += speed; speedOldX = speedX; }
-            //if (speedX != speedOldX && speedX < 0) { speedX -= speed; speedOldX = speedX; }
-            //if (speedZ != speedOldZ && speedZ > 0) { speedZ += speed; speedOldZ = speedZ; }
-            //if (speedZ != speedOldZ && speedZ < 0) { speedZ -= speed; speedOldZ = speedZ; }
-
-            //if (speedX != speedOldX) { speedOldX = speedX; }
-            //if (speedZ != speedOldZ) { speedOldZ = speedZ; }
-
-            // Составление Vectora3
-            //move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-
-            move = new Vector3(speedX,speedY,speedZ);
+            move = new Vector3(RoSpeedX, RoSpeedY, RoSpeedZ);
         }
 
+        // Действие движение WSDA
+        if (move != new Vector3(0, 0, 0)) transform.Translate(move * Time.deltaTime);
+        // Движение  поворот корпуса в лево право 
+        if (RoSpeedY != 0) transform.Rotate(new Vector3(0f, RoSpeedY, 0) * Time.deltaTime, Space.Self);
+      
+        // Старый вариант движения корабля
+        // move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+
+
+       //     Debug.Log(move + "/          speed/" + speed + "/        RoSpeedXYZ/" + RoSpeedX + "/" + RoSpeedY + "/" + RoSpeedZ + "/              RoSpeedXYZ/ " + RoSpeedX + "/" + RoSpeedY + "/" + RoSpeedZ + "/");
 
         // Перевороты  действие
-        if (RotationSpeedW != 0f) transform.Rotate((RotationSpeedW < 0f ? new Vector3(0f, 0f, RotationSpeedW) : new Vector3(0f, 0f, RotationSpeedW)) * Time.deltaTime, Space.World);   
-        if (RotationSpeedH != 0f) transform.Rotate((RotationSpeedH > 0f ? new Vector3(RotationSpeedH, 0f, 0f) : new Vector3(RotationSpeedH, 0f, 0f)) * Time.deltaTime, Space.World); 
-
-        // Движение  действие
-        if (move != new Vector3(0, 0, 0))   transform.Translate(move * Time.deltaTime);
-
-        // Старый вариант движения корабля
-              move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-
-
-        Debug.Log(move + "/          speed/" + speed + "/        speedXYZ/" + speedX + "/" + speedY + "/" + speedZ + "/          speedOldXZ/" + speedOldX + "/" + speedOldY + "/" + speedOldZ + "/               speedXYZ/ " + speedX + "/" + speedY + "/" + speedZ + "/");
-        //     Debug.Log("/     speed: " + speed + "     RotationSpeedW: " + RotationSpeedW + "     RotationSpeedH: " + RotationSpeedH);
-
-
+        if (RoSpeedW != 0f) 
+            transform.Rotate(new Vector3(0f, 0f, RoSpeedW) * Time.deltaTime, Space.Self);
+        if (RoSpeedH != 0f) 
+            transform.Rotate(new Vector3(RoSpeedH, 0f, 0f) * Time.deltaTime, Space.Self);
 
         // МЫШЬ   Camera.main.
-        transform.Rotate(
-            Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime,
+        Camera.main.transform.Rotate(
+            0, //Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime,
             Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime,
             0);
 

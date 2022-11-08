@@ -13,11 +13,11 @@ public class Planet
 
     [SerializeField] public string fname; /* {get{return fname;} set{fname = value;}}*/
 
-     public  Planet(string name, float us, float radius, Vector3 _Vector3)
+    public Planet(string name, float us, float radius, Vector3 place)
     {
 
         planet = ObjectFactory.CreatePrimitive(PrimitiveType.Sphere);
-        planet.transform.position = _Vector3;
+        planet.transform.position = place;
         planet.name = name;
         planet.transform.localScale = new Vector3(radius, radius, radius);
 
@@ -26,7 +26,18 @@ public class Planet
         planet.GetComponent<Rigidbody>().detectCollisions = true;
         planet.GetComponent<SphereCollider>().radius = radius + 20;
         planet.GetComponent<SphereCollider>().isTrigger = true;
-        planet.GetComponent<Renderer>().material.color = Color.red;
+        if (name == "P000000")
+        {
+              planet.GetComponent<Renderer>().material.color = Color.yellow;
+        
+
+         //   Material mymat = planet.AddComponent<Renderer>().material;
+            //mymat.SetColor("_EmissionColor",Color.green);
+        }
+        else
+            planet.GetComponent<Renderer>().material.color = Color.blue;
+
+        //      planet.GetComponent<Renderer>().material.color = Color.black;
 
         planet.AddComponent<Rotation>().us = us;
   }
