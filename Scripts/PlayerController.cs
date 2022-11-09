@@ -31,11 +31,11 @@ public class PlayerController: MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             // Перевороты  расчет   
-            if (Input.GetKeyDown(KeyCode.A)) RoSpeedW += 2f;
-            if (Input.GetKeyDown(KeyCode.D)) RoSpeedW -= 2f;
+            if (Input.GetKeyDown(KeyCode.A)) RoSpeedW += 4f;
+            if (Input.GetKeyDown(KeyCode.D)) RoSpeedW -= 4f;
 
-            if (Input.GetKeyDown(KeyCode.W)) RoSpeedH += 2f; // Math.Abs(RotationSpeed - 20f)
-            if (Input.GetKeyDown(KeyCode.S)) RoSpeedH -= 2f;
+            if (Input.GetKeyDown(KeyCode.W)) RoSpeedH += 4f; // Math.Abs(RotationSpeed - 20f)
+            if (Input.GetKeyDown(KeyCode.S)) RoSpeedH -= 4f;
         }
         else
         {

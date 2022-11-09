@@ -27,6 +27,7 @@ class Main : MonoBehaviour
 
     public const float ae = 149_597_870.691f; //149597870.691f;
     public float aeg = 10_000.000f;
+    public Light LightCentre;
 
 
     //  public static GameObject go, myGameObject; //, Spaceship;
@@ -45,6 +46,22 @@ class Main : MonoBehaviour
         CENTRE.transform.localScale = new Vector3(0.006f, 0.006f, 0.006f);
         Renderer rendCENTRE = CENTRE.GetComponent<Renderer>();
         rendCENTRE.material.color = Color.yellow;
+
+
+        //LightCentre = new Light();
+        //rendCENTRE.material.color = Color.red;
+
+        GameObject lightObj = new ("LightCentre");
+        Light lightCentre = lightObj.AddComponent<Light>();
+        lightCentre.transform.position = new Vector3(0, 0, 0);
+        lightCentre.color = Color.yellow;
+        lightCentre.range=7000f;
+        lightCentre.type = LightType.Point;
+
+
+
+
+
 
         //     CENTRE.AddComponent<AudioSource>();
 
@@ -77,7 +94,7 @@ class Main : MonoBehaviour
         GameObject Spaceship = ObjectFactory.CreatePrimitive(PrimitiveType.Cube);
 
         Spaceship.name = "Spaceship";
-        Spaceship.transform.localScale = new Vector3(.6f, .2f, 12f);
+        Spaceship.transform.localScale = new Vector3(.06f, .02f, .6f);
         Spaceship.transform.position = Vector3.zero;
 
         Spaceship.transform.position = new Vector3(4000f, 0, 0);
@@ -94,16 +111,17 @@ class Main : MonoBehaviour
 
         Spaceship.AddComponent<PlayerController>();
 
-
+        ////////////////////////////////////////////////////////////////////
         Camera.main.Reset();
         Camera.main.transform.parent = Spaceship.transform;
         Camera.main.transform.position = Vector3.zero;
         Camera.main.transform.localPosition =
             new Vector3(0,
-                        Spaceship.transform.position.y + 1.1f,
+                        Spaceship.transform.position.y + 1.27f,
                         Spaceship.transform.position.z - 0f);
         Camera.main.transform.Rotate(new Vector3(0, -90, 0));
         Camera.main.farClipPlane = 1000_000f;
+        Camera.main.nearClipPlane = 0.01f;
 
 
 

@@ -10,7 +10,10 @@ public class Planet
 
     public GameObject planet;
 
+    public Renderer render;
+    public Material newMat;
 
+    
     [SerializeField] public string fname; /* {get{return fname;} set{fname = value;}}*/
 
     public Planet(string name, float us, float radius, Vector3 place)
@@ -28,10 +31,10 @@ public class Planet
         planet.GetComponent<SphereCollider>().isTrigger = true;
         if (name == "P000000")
         {
-              planet.GetComponent<Renderer>().material.color = Color.yellow;
-        
+            planet.GetComponent<MeshRenderer>().material.color = Color.yellow;
+            planet.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.yellow);
 
-         //   Material mymat = planet.AddComponent<Renderer>().material;
+            //   Material mymat = planet.AddComponent<Renderer>().material;
             //mymat.SetColor("_EmissionColor",Color.green);
         }
         else
